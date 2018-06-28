@@ -14,14 +14,20 @@ class NewsList extends Component {
   };
 
   componentWillMount() {
-    axios
-      .get(`${URL}/articles?_start=${this.state.start}&_end=${this.state.end}`)
-      .then(response => {
-        this.setState({
-          items: [...this.state.items, ...response.data]
-        });
-      });
+    this.request(this.state.start, this.state.end);
   }
+
+  request = (start, end) => {
+    axios.get(`${URL}/articles?_start=${start}&_end=${end}`).then(response => {
+      this.setState({
+        items: [...this.state.items, ...response.data]
+      });
+    });
+  };
+
+  loadMore = () => {
+    this.request(this.state.end, this.state.end + this.state.amount);
+  };
 
   renderNews = type => {
     let template = null;
@@ -46,7 +52,12 @@ class NewsList extends Component {
 
   render() {
     console.log(this.state.items);
-    return <div>{this.renderNews(this.props.type)}</div>;
+    return (
+      <div>
+        {this.renderNews(this.props.type)}
+        <div onClick={() => this.loadMore()}>LOAD MORE</div>
+      </div>
+    );
   }
 }
 export default NewsList;

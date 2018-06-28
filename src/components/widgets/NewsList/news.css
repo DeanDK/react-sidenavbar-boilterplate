@@ -11,3 +11,7 @@
   margin: 5px 0;
   color: #525252;
 }
+
+.newslist_item a {
+  text-decoration: none;
+}
