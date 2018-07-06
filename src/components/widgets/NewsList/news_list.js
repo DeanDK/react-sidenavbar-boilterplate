@@ -34,13 +34,22 @@ class NewsList extends Component {
     switch (type) {
       case "card":
         template = this.state.items.map((item, i) => (
-          <div key={i}>
-            <div className={styles.newslist_item}>
-              <Link to={`/articles/${item.id}`}>
-                <h2>{item.title}</h2>
-              </Link>
+          <CSSTransition
+            classNames={{
+              enter: styles.newsList_wrapper,
+              enterActive: styles.newsList_wrapper_enter
+            }}
+            timeout={500}
+            key={i}
+          >
+            <div key={i}>
+              <div className={styles.newslist_item}>
+                <Link to={`/articles/${item.id}`}>
+                  <h2>{item.title}</h2>
+                </Link>
+              </div>
             </div>
-          </div>
+          </CSSTransition>
         ));
         break;
       default:
@@ -54,8 +63,10 @@ class NewsList extends Component {
     console.log(this.state.items);
     return (
       <div>
-        {this.renderNews(this.props.type)}
-        <div onClick={() => this.loadMore()}>LOAD MORE</div>
+        <TransitionGroup component="div" className="list">
+          {this.renderNews(this.props.type)}
+          <div onClick={() => this.loadMore()}>LOAD MORE</div>
+        </TransitionGroup>
       </div>
     );
   }
